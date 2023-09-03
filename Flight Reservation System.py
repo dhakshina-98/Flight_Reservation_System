@@ -1,129 +1,110 @@
-class passenger:
-    def __init__(self,na,a,g,p,uid):
-        self.na=na
-        self.a=a
-        self.g=g
-        self.p=p
-        self.uid=uid
-        self.bd=0
-        self.st=False
-        self.cost=0
-class detail:
-    def __init__(self):
-        self.l=[]
-        self.id=101
-d=detail()
-class Ticket:
-    def __init__(self):
-        self.tn=50
-t=Ticket()
-class Booked:
-    def __init__(self,bd):
-        pass
-def signup():
-    na=input("Enter Name:")
-    a=input("Enter Age:")
-    if a >="18":
-        g=input("Enter Gender:")
-        pwd=input("Enter Password:")
-        e=passenger(na,a,g,pwd,d.id)
-        d.l.append(e)
-        print('Your passenger id:',d.id)
-        d.id+=1
+l=[];p=[];c=[];p_total=50
+def sign():
+    key=['Phone','email','password']
+    phone=input('enter your phone number: ').lower()
+    email=input('enter your email: ').lower()
+    password=input('enter your password: ').lower()
+    d={'phone':phone,'email':email,'password':password}
+    l.append(d)
+    print('Your user name is: ',d['email'])
+def available_tickets():
+    c.append(p_total)
+    print("Available Ticket Now:", c[0])
+def book_ticket(i):
+    if c != []:
+        nt=int(input("How many tickets you booked: "))
+        p_id=i
+        for i in range(nt):
+            p_name=input("Enter Passenger name: ").lower()
+            p_age=int(input("Enter Passenger age: "))
+            p_address=input('Enter your address: ').lower()
+            p_email=input("Enter your email: ").lower()
+            p_ph=input('Enter your phone number: ').lower()
+            p_status='waiting list'
+            f={'p_name':p_name,'p_age':p_age,'p_address':p_address,'p_email':p_email,'p_ph':p_ph,'p_status':p_status,'p_id':p_id,'p_nt':nt}
+            p.append(f)
+            print(f"your booking detail is: {p[i]}")
     else:
-        print('...Incorrect...')
-def check():
-    print("Total no of tickets:",50)
-    print("Available Ticket:",t.tn)
-    print("Price per ticket:",2000)
-def bookticket(x):
-    tc=int(input("Enter no of ticket booked:"))
-    d.l[x-101].cost=tc*2000
-    print("cost of your ticket is:",d.l[x-101].cost)
-    d.l[x-101].bd=tc
-def status(x):
-    if d.l[x-101].st==True:
-        print("...your ticket is Approve...")
-    elif d.l[x-101].st==101:
-        print("...your ticket is Cancelled...")
+        print("Ticket Not Available")
+def show_status(i):
+    if p != [] :
+        print(f"Your Current status: {p[i]['p_status']}")
     else:
-        print('...your ticket is waiting...')   
-def cashier():
-    x="csh1001"
-    y="123"
-    u=input("Enter cashier id:")
-    pd=input("Enter cashier pd:")
-    if x in u and y in pd:
-        print("...Log in Success...")
-        while True:
-            opt=int(input("1.Approve\n2.Cancel\n3.logout\n"))
-            if opt==3:
-                break
-            elif opt==1:
-                Approve()
-            elif opt==2:
-                Cancel()
-    else:
-        print(".....Incorrect.....")
-def Approve():
-    x=int(input("Enter passenger id you want to Approve:"))
-    if d.l[x-101].uid==x:
-        print(".....Your Ticket is approved.....")
-    t.tn=t.tn-d.l[x-101].bd
-    d.l[x-101].st=True
-def Cancel():
-    x=int(input("Enter passenger id you want to cancelled:"))
-    if d.l[x-101].uid==x:
-        print(".....Your Ticket is cancelled.....")
-        d.l[x-101].st=101
+        print("You are no ticket booked")
 def login():
-    x=int(input('Enter your Id:'))
-    pw=input('Enter your Password:')
-    if d.l[x-101].uid==x and d.l[x-101].p==pw:
-        print(".....success.....")
+    username=input('enter your username: ').lower()
+    pwd=input('enter your password: ').lower()
+    email_list = [e['email'] for e in l]
+    i = email_list.index(username)
+    if l[i]['email'] in username and l[i]['password'] in pwd:
+        print('log in sucess')
         while True:
-            opt=int(input('1.check\n2.bookticket\n3.status\n4.logout\n'))
-            if opt==4:
+            n=int(input("1.book_ticket\n2.show_status\n3.available_tickets\n4.exit\n"))
+            if n==4:
                 break
-            elif opt==1:
-                check()
-            elif opt==2:
-                bookticket(x)
-            elif opt==3:
-                status(x)
-            else:
-                print('...Invalid...')
+            elif n==1:
+                book_ticket(i)
+            elif n==2:
+                show_status(i)
+            elif n==3:
+                available_tickets()
     else:
-        print("...Incorrect...")
+        print('invalid login...\n     try again...')
+def Passenger():
+    while True:
+        n=int(input("1.signup\n2.login\n3.exit\n"))
+        if n==3:
+            break
+        elif n==1:
+            sign()
+        elif n==2:
+            login()
+def approve_remove():
+    for i in range(len(l)):
+        status=input("if you want accespt\cancel in this id(yes or no): ").lower()
+        if status in 'yes':
+            p[i]['p_status']='Approved'
+            c[0]=c[0]-p[i]['p_nt']
+        else:
+            p[i]['p_status']='Cancelled'
+def c_login():
+    c_username=input("Enter Cashior username: ").lower()
+    c_pwd=input("Enter Cashior pwd: ").lower()
+    if c_username in 'cashior@gmail.com' and c_pwd in 'cash123':
+        print("Cashior log in sucess!...")
+        while True:
+            n=int(input("1.approve_remove\n2.exit\n"))
+            if n==2:
+                break
+            elif n==1:
+                approve_remove()
+    else:
+        print('invalid login...\n     try again...')
+def Cashior():
+    while True:
+        try:
+            n=int(input("1.c_login\n2.exit\n"))
+            if n==2:
+                break
+            elif n==1:
+                c_login()
+        except:
+            print("\nINvalid input....\n")
 p="\t Python Module \t"
 print(p.expandtabs(40))
-q="\n\t Flight Reservation System \t"
+q="\n\t Welome Flight Reservation System \t"
 print(q.expandtabs(35))
-print(" \nMain Menu ")        
+print(" \nMain Menu ") 
 while True:
-    n=int(input('1.passenger\n2.cashier\n3.exit\n'))
-    if n==3:
-        break
-    elif n==1:
-        while True:
-            opt=int(input('1.signup\n2.login\n3.exit\n'))
-            if opt==3:
-                break
-            elif opt==1:
-                signup()
-            elif opt==2:
-                login()
-            else:
-                print('....Invalid options....')
-    elif n==2:
-        cashier()
-        
-
-
-
-
-
-
-
-
+    try:
+        n=int(input("1.Passenger\n2.Cashior\n3.exit\n"))
+        if n==3:
+            print('Thank you for using..')
+            break
+        elif n==1:
+            Passenger()
+        elif n==2:
+            Cashior()
+    except:
+      print("\nINvalid input....\n")
 
